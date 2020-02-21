@@ -12,7 +12,11 @@
 
     <!-- show off loading gif and results on load --> 
     <style>
-        #calc-parameters, #loading, #results {
+        #calc-parameters, 
+        #calc-param-txconverter,
+        #loading, 
+        #results,
+        #results-txconverter {
             display:none;
         }
     </style>
@@ -24,13 +28,23 @@
             <div class="col-md-6 mx-auto">
                 <div class="card card-body text-center mt-5">
                     <h1 class="heading display-5 pb-3">Calculadoras</h1>
-                    <form id="loan-form">
+                    <form id="calc-form">
                         <div class="form-group">
                             <select class="form-control" id="tipodecalculadora-select">
                                 <option value="" selected class="">Escolha a Calculadora</option>
                                 <option value="txAnualToTxMensal">- Conveter Tx Anual para Tx Mensal</option>
                                 <option value="txMensalToTxAnual">- Conveter Tx Mensal para Tx Anual</option>
                             </select>
+                        </div>
+                        <div id="calc-param-txconverter">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="taxa" placeholder="Taxa Mensal">
+                                </div>
+                            </div>
                         </div>
                         <div id="calc-parameters">
                             <div class="form-group">
@@ -62,32 +76,18 @@
                         <img src="img/loading.gif" alt="">
                     </div>
                     <!-- RESULTS-->
-                    <div id="results" class="pt-4">
-                        <h5>Results</h5>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Monthly Payment</span>
+                    <div id="results-txconverter" class="pt-4">
+                        <h5>Resultado</h5>
+                        <div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="">Taxa</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="txConvertida" disabled>
                                 </div>
-                                <input type="number" class="form-control" id="monthly-payment" disabled>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Total Payment</span>
-                                </div>
-                                <input type="number" class="form-control" id="total-payment" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Total Interest</span>
-                                </div>
-                                <input type="number" class="form-control" id="total-interest" disabled>
-                            </div>
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -99,6 +99,7 @@
     <script src="js/jquery-3.4.1.slim.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="calcfunctions.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

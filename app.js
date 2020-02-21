@@ -4,11 +4,11 @@ let calculate = '';
 // Listem for Calculator type
 document.getElementById('tipodecalculadora-select').addEventListener('change', function(e) {
   calculate = e.target.value;
-  showOrHideParameters(calculate);
+  showOrHideParameters(e.target.value);
 });
 
 // Listem for submit
-document.getElementById('loan-form').addEventListener('submit', function(e) {
+document.getElementById('calc-form').addEventListener('submit', function(e) {
   // Hide results and sow loading
   showOrHideResultsOrLoading('none', 'block');
 
@@ -20,12 +20,17 @@ document.getElementById('loan-form').addEventListener('submit', function(e) {
 // Exibe os parâmetros da calculadora escolhida
 function showOrHideParameters(calcType) {
   let calculateFunction;
+  console.log(document.getElementById('calc-param-txconverter').tagName);
+  
+  // Hide all parameters
+  showHideTxAnualToMonthlyConverterParam('none');
+
   switch (calcType) {
     case 'txAnualToTxMensal':
-      calculateFunction = calculateTxAnualFromMensal;
+      showHideTxAnualToMonthlyConverterParam('block');
       break;
     case 'txMensalToTxAnual':
-      calculateFunction = calculateTxMensalFromAnual;
+      showHideTxMonthlyToAnualConverterParam('block');
       break;
     default:
   
@@ -33,60 +38,91 @@ function showOrHideParameters(calcType) {
   console.log(calcType);
 }
 
+// show or hide tx anual to tx mensal
+function showHideTxAnualToMonthlyConverterParam(showHide) {
+  const divParamUI = document.getElementById('calc-param-txconverter');
+  const inputParamUI = document.getElementById('taxa');
+  
+  inputParamUI.placeholder = 'Taxa anual';
+  divParamUI.style.display = showHide;
+}
+
+// show or hide tx mensal to tx anual
+function showHideTxMonthlyToAnualConverterParam(showHide) {
+  const divParamUI = document.getElementById('calc-param-txconverter');
+  const inputParamUI = document.getElementById('taxa');
+  
+  inputParamUI.placeholder = 'Taxa mensal';
+  divParamUI.style.display = showHide;
+}
+
+
 // Exibe ou esconde os resultados e o loading gif
-function showOrHideResultsOrLoading(results, loading) {
+function showOrHideResultsOrLoading(element, results, loading) {
    // Show or Hide results
-   document.getElementById('results').style.display = results;
+   element.style.display = results;
    document.getElementById('loading').style.display = loading;
 }
 
-// Define calculate function
-function getCalculateFunctionName() {
-  let calculateFunction;
-  switch (calculate) {
-    case 'txAnualToTxMensal':
-      calculateFunction = calculateTxAnualFromMensal;
-      break;
-    case 'txMensalToTxAnual':
-      calculateFunction = calculateTxMensalFromAnual;
-      break;
-    default:
-  
+// Calculate tx mensal to anual
+function exibeCalculoTxAnualFromTxMensal() {
+
+  const taxaUI = document.getElementById('taxa');
+  const resultsDivUI = document.getElementById('results-txconverter');
+  const txConvertidaUI = document.getElementById('txConvertida');
+
+  const txMensal = parseFloat(taxaUI.value);
+  const txAnual = getTxAnualFromTxMensal(txMensal);
+
+  if (isFinite(txAnual)) {
+    txConvertidaUI.value = txAnual.toFixed(2);
+
+    // Show results and hide loading
+    showOrHideResultsOrLoading(resultsDivUI, 'block', 'none'); 
+  } else {
+    showError('Taxa inválida ou não informada.');
   }
-  return calculateFunction;
+
+}
+
+// Calculate tx mensal to anual
+function exibeCalculoTxMonthlyFromTxAnual() {
+
+  const taxaUI = document.getElementById('taxa');
+  const resultsDivUI = document.getElementById('results-txconverter');
+  const txConvertidaUI = document.getElementById('txConvertida');
+
+  const txAnual = parseFloat(taxaUI.value);
+  const txMensal = getTxMensalFromTxAnual(txAnual);
+
+  if (isFinite(txMensal)) {
+    txConvertidaUI.value = txMensal.toFixed(2);
+
+    // Show results and hide loading
+    showOrHideResultsOrLoading(resultsDivUI, 'block', 'none'); 
+  } else {
+    showError('Taxa inválida ou não informada.');
+  }
+
 }
 
 //Calculate Results
 function calculateResults() {
   
-  // UI vars
-  const amountUI = document.getElementById('amount');
-  const interestUI = document.getElementById('interest');
-  const yearsUI = document.getElementById('years');
-  const monthlyPaymentUI = document.getElementById('monthly-payment');
-  const totalPaymentUI = document.getElementById('total-payment');
-  const totalInterestUI = document.getElementById('total-interest');
-
-  const principal = parseFloat(amountUI.value);
-  const calculatedInterest = parseFloat(interestUI.value) / 100 / 12;
-  const calculatedPayments = parseFloat(yearsUI.value) * 12;
-
-  //Compute monthly payment
-  const x = Math.pow(1 + calculatedInterest, calculatedPayments);
-  const monthly = (principal * x * calculatedInterest) / (x - 1);
-
-  if (isFinite(monthly)) {
-    monthlyPaymentUI.value = monthly.toFixed(2);
-    totalPaymentUI.value = (monthly * calculatedPayments).toFixed(2);
-    totalInterestUI.value = ((monthly * calculatedPayments) - principal).toFixed(2);
-
-    // Show results and hide loading
-    showOrHideResultsOrLoading('block', 'none'); 
-  } else {
-    showError('Please check your numbers');
+  switch (calculate) {
+    case 'txAnualToTxMensal':
+      exibeCalculoTxAnualFromTxMensal() ;
+      break;
+    case 'txMensalToTxAnual':
+      showHideTxMonthlyToAnualConverterParam('block');
+      break;
+    default:
+  
   }
+  
 }
 
+// Show error
 function showError(error) {
   // hide results and hide loader
   showOrHideResultsOrLoading('none', 'none');
@@ -109,6 +145,7 @@ function showError(error) {
   setTimeout(clearError, 2000);
 }
 
+// Clear error
 function clearError() {
   document.querySelector('.alert').remove();
 }
