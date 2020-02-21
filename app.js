@@ -19,6 +19,17 @@ document.getElementById('loan-form').addEventListener('submit', function(e) {
 
 // Exibe os parâmetros da calculadora escolhida
 function showOrHideParameters(calcType) {
+  let calculateFunction;
+  switch (calcType) {
+    case 'txAnualToTxMensal':
+      calculateFunction = calculateTxAnualFromMensal;
+      break;
+    case 'txMensalToTxAnual':
+      calculateFunction = calculateTxMensalFromAnual;
+      break;
+    default:
+  
+  }
   console.log(calcType);
 }
 
@@ -101,3 +112,4 @@ function showError(error) {
 function clearError() {
   document.querySelector('.alert').remove();
 }
+
