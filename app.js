@@ -1,17 +1,17 @@
 
-let calculadoraId;
+let calculadoraId = '';
 let calculadora;
 
 // Listem for Calculator type
 document.getElementById('tipodecalculadora-select').addEventListener('change', function(e) {
- 
+  
+  calculadora = undefined;
   calculadoraId = e.target.value;
   calculadoras.forEach(function(calc) {
     if (calc.id === calculadoraId) {
       calculadora = calc;
     } 
   });
-  console.log(calculadora);
   
   showOrHideParameters(calculadoraId);
 
@@ -29,16 +29,18 @@ document.getElementById('calc-form').addEventListener('submit', function(e) {
 
 // Exibe os parâmetros da calculadora escolhida
 function showOrHideParameters(calculadoraId) {
-      
-  let paramToShowUI = document.getElementById(calculadora.param.ui);
-  let functionName = calculadora.param.function;
-  
+       
   // Hide all parameters
   calculadoras.forEach(function(calc) {
     const divUI = document.getElementById(calc.param.ui);
     divUI.style.display = 'none';
   });
   
+  let paramToShowUI;
+  if (calculadora !== undefined) {
+    paramToShowUI = document.getElementById(calculadora.param.ui);
+  }
+ 
   if (paramToShowUI !== undefined) {
     if (typeof calculadora.param.config === 'function') {
       calculadora.param.config();
@@ -59,7 +61,6 @@ function showOrHideResultsOrLoading(results, loading) {
 function exibeCalculoTxAnualFromTxMensal() {
 
   const taxaUI = document.getElementById('taxa');
-  const resultsDivUI = document.getElementById(calculadora.result.ui);
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txMensal = parseFloat(taxaUI.value);
@@ -80,7 +81,6 @@ function exibeCalculoTxAnualFromTxMensal() {
 function exibeCalculoTxMensalFromTxAnual() {
 
   const taxaUI = document.getElementById('taxa');
-  const resultsDivUI = document.getElementById(calculadora.result.ui);
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txAnual = parseFloat(taxaUI.value);
@@ -104,7 +104,7 @@ function calculateResults() {
     case 'txAnualFromTxMensal':
       exibeCalculoTxAnualFromTxMensal();
       break;
-    case 'txMensalToTxAnual':
+    case 'txMensalFromTxAnual':
       exibeCalculoTxMensalFromTxAnual();
       break;
     default:
