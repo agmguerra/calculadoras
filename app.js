@@ -1,10 +1,17 @@
 
-let calculadoraId = '';
+let calculadoraId;
+let calculadora;
 
 // Listem for Calculator type
 document.getElementById('tipodecalculadora-select').addEventListener('change', function(e) {
  
   calculadoraId = e.target.value;
+  calculadoras.forEach(function(calc) {
+    if (calc.id === calculadoraId) {
+      calculadora = calc;
+    } 
+  });
+
   showOrHideParameters(calculadoraId);
 
 });
@@ -22,16 +29,13 @@ document.getElementById('calc-form').addEventListener('submit', function(e) {
 // Exibe os parâmetros da calculadora escolhida
 function showOrHideParameters(calculadoraId) {
       
-  let paramToShowUI;
-  let functionName;
+  let paramToShowUI = document.getElementById(calculadora.param.ui);
+  let functionName = calculadora.param.function;
+  
   // Hide all parameters
   calculadoras.forEach(function(calc) {
     const divUI = document.getElementById(calc.param.ui);
     divUI.style.display = 'none';
-    if (calc.id === calculadoraId) {
-      paramToShowUI = divUI
-      functionName = calc.param.function;
-    } 
   });
   
   if (paramToShowUI !== undefined) {
