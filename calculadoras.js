@@ -1,12 +1,26 @@
 const calculadoras = [
   {
-    id: 'txAnualToTxMensal', 
-    param: { ui: 'txconverter-param', function: 'showHideTxAnualToMonthlyConverterParam'},
-    result: { ui: 'results-txconverter', function: ''}
+    id: 'txMensalFromTxAnual', 
+    param: { ui: 'txconverter-param', 
+             config: function() {
+               const inputParamUI = document.getElementById('taxa');
+               inputParamUI.placeholder = 'Taxa anual';
+             }
+           },
+    result: { ui: 'results-txconverter', 
+              config: undefined
+            }
   },
   {
-    id: 'txMensalToTxAnual', 
-    param: { ui: 'txconverter-param', function: 'showHideTxMonthlyToAnualConverterParam'},
-    result: { ui: 'results-txconverter', function: ''}
+    id: 'txAnualFromTxMensal', 
+    param: { ui: 'txconverter-param', 
+             config: function() {
+               const inputParamUI = document.getElementById('taxa');
+               inputParamUI.placeholder = 'Taxa mensal';
+             }
+           },
+    result: { ui: 'results-txconverter', 
+              config: undefined
+            }
   }
 ];

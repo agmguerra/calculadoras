@@ -11,7 +11,8 @@ document.getElementById('tipodecalculadora-select').addEventListener('change', f
       calculadora = calc;
     } 
   });
-
+  console.log(calculadora);
+  
   showOrHideParameters(calculadoraId);
 
 });
@@ -19,7 +20,7 @@ document.getElementById('tipodecalculadora-select').addEventListener('change', f
 // Listem for submit
 document.getElementById('calc-form').addEventListener('submit', function(e) {
   // Hide results and sow loading
-  showOrHideResultsOrLoading(calculate, 'none', 'block');
+  showOrHideResultsOrLoading('none', 'block');
 
   setTimeout(calculateResults, 2000);
 
@@ -39,30 +40,18 @@ function showOrHideParameters(calculadoraId) {
   });
   
   if (paramToShowUI !== undefined) {
-    if (functionName !== undefined) {
-      window[functionName](paramToShowUI);
+    if (typeof calculadora.param.config === 'function') {
+      calculadora.param.config();
     }
     paramToShowUI.style.display = 'block';
   }
   
 }
 
-// show or hide tx anual to tx mensal
-function showHideTxAnualToMonthlyConverterParam(paramUI) {
-  const inputParamUI = document.getElementById('taxa');
-  inputParamUI.placeholder = 'Taxa anual';
-}
-
-// show or hide tx mensal to tx anual
-function showHideTxMonthlyToAnualConverterParam(paramUI) {
-  const inputParamUI = document.getElementById('taxa');
-  inputParamUI.placeholder = 'Taxa mensal';
-}
-
 // Exibe ou esconde os resultados e o loading gif
 function showOrHideResultsOrLoading(results, loading) {
    // Show or Hide results
-   element.style.display = results;
+   document.getElementById(calculadora.result.ui).style.display = results
    document.getElementById('loading').style.display = loading;
 }
 
@@ -70,7 +59,7 @@ function showOrHideResultsOrLoading(results, loading) {
 function exibeCalculoTxAnualFromTxMensal() {
 
   const taxaUI = document.getElementById('taxa');
-  const resultsDivUI = document.getElementById('results-txconverter');
+  const resultsDivUI = document.getElementById(calculadora.result.ui);
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txMensal = parseFloat(taxaUI.value);
@@ -80,7 +69,7 @@ function exibeCalculoTxAnualFromTxMensal() {
     txConvertidaUI.value = txAnual.toFixed(2);
 
     // Show results and hide loading
-    showOrHideResultsOrLoading(resultsDivUI, 'block', 'none'); 
+    showOrHideResultsOrLoading('block', 'none'); 
   } else {
     showError('Taxa inválida ou não informada.');
   }
@@ -88,10 +77,10 @@ function exibeCalculoTxAnualFromTxMensal() {
 }
 
 // Calculate tx mensal to anual
-function exibeCalculoTxMonthlyFromTxAnual() {
+function exibeCalculoTxMensalFromTxAnual() {
 
   const taxaUI = document.getElementById('taxa');
-  const resultsDivUI = document.getElementById('results-txconverter');
+  const resultsDivUI = document.getElementById(calculadora.result.ui);
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txAnual = parseFloat(taxaUI.value);
@@ -101,7 +90,7 @@ function exibeCalculoTxMonthlyFromTxAnual() {
     txConvertidaUI.value = txMensal.toFixed(2);
 
     // Show results and hide loading
-    showOrHideResultsOrLoading(resultsDivUI, 'block', 'none'); 
+    showOrHideResultsOrLoading('block', 'none'); 
   } else {
     showError('Taxa inválida ou não informada.');
   }
@@ -110,14 +99,13 @@ function exibeCalculoTxMonthlyFromTxAnual() {
 
 //Calculate Results
 function calculateResults() {
-  console.log(calculate);
   
-  switch (calculate) {
-    case 'txAnualToTxMensal':
-      exibeCalculoTxAnualFromTxMensal() ;
+  switch (calculadora.id) {
+    case 'txAnualFromTxMensal':
+      exibeCalculoTxAnualFromTxMensal();
       break;
     case 'txMensalToTxAnual':
-      showHideTxMonthlyToAnualConverterParam('block');
+      exibeCalculoTxMensalFromTxAnual();
       break;
     default:
   
