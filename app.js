@@ -1,16 +1,18 @@
 
-let calculate = '';
+let calculadoraId = '';
 
 // Listem for Calculator type
 document.getElementById('tipodecalculadora-select').addEventListener('change', function(e) {
-  calculate = e.target.value;
-  showOrHideParameters(e.target.value);
+ 
+  calculadoraId = e.target.value;
+  showOrHideParameters(calculadoraId);
+
 });
 
 // Listem for submit
 document.getElementById('calc-form').addEventListener('submit', function(e) {
   // Hide results and sow loading
-  showOrHideResultsOrLoading('none', 'block');
+  showOrHideResultsOrLoading(calculate, 'none', 'block');
 
   setTimeout(calculateResults, 2000);
 
@@ -18,47 +20,43 @@ document.getElementById('calc-form').addEventListener('submit', function(e) {
 });
 
 // Exibe os parâmetros da calculadora escolhida
-function showOrHideParameters(calcType) {
-  let calculateFunction;
-  console.log(document.getElementById('calc-param-txconverter').tagName);
-  
+function showOrHideParameters(calculadoraId) {
+      
+  let paramToShowUI;
+  let functionName;
   // Hide all parameters
-  showHideTxAnualToMonthlyConverterParam('none');
-
-  switch (calcType) {
-    case 'txAnualToTxMensal':
-      showHideTxAnualToMonthlyConverterParam('block');
-      break;
-    case 'txMensalToTxAnual':
-      showHideTxMonthlyToAnualConverterParam('block');
-      break;
-    default:
+  calculadoras.forEach(function(calc) {
+    const divUI = document.getElementById(calc.param.ui);
+    divUI.style.display = 'none';
+    if (calc.id === calculadoraId) {
+      paramToShowUI = divUI
+      functionName = calc.param.function;
+    } 
+  });
   
+  if (paramToShowUI !== undefined) {
+    if (functionName !== undefined) {
+      window[functionName](paramToShowUI);
+    }
+    paramToShowUI.style.display = 'block';
   }
-  console.log(calcType);
+  
 }
 
 // show or hide tx anual to tx mensal
-function showHideTxAnualToMonthlyConverterParam(showHide) {
-  const divParamUI = document.getElementById('calc-param-txconverter');
+function showHideTxAnualToMonthlyConverterParam(paramUI) {
   const inputParamUI = document.getElementById('taxa');
-  
   inputParamUI.placeholder = 'Taxa anual';
-  divParamUI.style.display = showHide;
 }
 
 // show or hide tx mensal to tx anual
-function showHideTxMonthlyToAnualConverterParam(showHide) {
-  const divParamUI = document.getElementById('calc-param-txconverter');
+function showHideTxMonthlyToAnualConverterParam(paramUI) {
   const inputParamUI = document.getElementById('taxa');
-  
   inputParamUI.placeholder = 'Taxa mensal';
-  divParamUI.style.display = showHide;
 }
 
-
 // Exibe ou esconde os resultados e o loading gif
-function showOrHideResultsOrLoading(element, results, loading) {
+function showOrHideResultsOrLoading(results, loading) {
    // Show or Hide results
    element.style.display = results;
    document.getElementById('loading').style.display = loading;
@@ -108,6 +106,7 @@ function exibeCalculoTxMonthlyFromTxAnual() {
 
 //Calculate Results
 function calculateResults() {
+  console.log(calculate);
   
   switch (calculate) {
     case 'txAnualToTxMensal':
