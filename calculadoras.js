@@ -4,6 +4,7 @@ const calculadoras = [
     param: { ui: 'txconverter-param', 
              config: function() {
                const inputParamUI = document.getElementById('taxa');
+               inputParamUI.value = null;
                inputParamUI.placeholder = 'Taxa anual';
              }
            },
@@ -16,6 +17,7 @@ const calculadoras = [
     param: { ui: 'txconverter-param', 
              config: function() {
                const inputParamUI = document.getElementById('taxa');
+               inputParamUI.value = null;
                inputParamUI.placeholder = 'Taxa mensal';
              }
            },

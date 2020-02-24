@@ -3,22 +3,21 @@ let calculadoraId = '';
 let calculadora;
 
 // Listem for Calculator type
-document.getElementById('tipodecalculadora-select').addEventListener('change', function(e) {
-  
+document.getElementById('tipodecalculadora-select').addEventListener('change', function (e) {
+
+  hideAll();
   calculadora = undefined;
   calculadoraId = e.target.value;
-  calculadoras.forEach(function(calc) {
-    if (calc.id === calculadoraId) {
-      calculadora = calc;
-    } 
-  });
   
-  showOrHideParameters(calculadoraId);
+  if (calculadoraId !== '') {
+    calculadora = getCalculadora(calculadoraId);
+    showParameters(calculadoraId);
+  }
 
 });
 
 // Listem for submit
-document.getElementById('calc-form').addEventListener('submit', function(e) {
+document.getElementById('calc-form').addEventListener('submit', function (e) {
   // Hide results and sow loading
   showOrHideResultsOrLoading('none', 'block');
 
@@ -27,34 +26,62 @@ document.getElementById('calc-form').addEventListener('submit', function(e) {
   e.preventDefault();
 });
 
-// Exibe os parâmetros da calculadora escolhida
-function showOrHideParameters(calculadoraId) {
-       
-  // Hide all parameters
-  calculadoras.forEach(function(calc) {
-    const divUI = document.getElementById(calc.param.ui);
-    divUI.style.display = 'none';
+
+// Esconde param, results e loading
+function hideAll() {
+  // Hide all parameters and results
+  calculadoras.forEach(function (calc) {
+    const divParamUI = document.getElementById(calc.param.ui);
+    const divResultUI = document.getElementById(calc.result.ui);
+    divParamUI.style.display = 'none';
+    divResultUI.style.display = 'none';
   });
-  
-  let paramToShowUI;
-  if (calculadora !== undefined) {
-    paramToShowUI = document.getElementById(calculadora.param.ui);
+  document.getElementById('loading').style.display = 'none';
+  document.querySelector('.btn').disabled = true;
+}
+
+// Define a calculadora escolhida
+function getCalculadora(calcId) {
+  let calcEscolhida;
+  for (let index = 0; index < calculadoras.length; index++) {
+    if (calculadoras[index].id === calculadoraId) {
+      calcEscolhida = calculadoras[index];
+      break;
+    } 
   }
- 
+  return calcEscolhida;
+}
+
+// Exibe os parâmetros da calculadora escolhida
+function showParameters(calculadoraId) {
+
+  const paramToShowUI = document.getElementById(calculadora.param.ui);
+
   if (paramToShowUI !== undefined) {
     if (typeof calculadora.param.config === 'function') {
       calculadora.param.config();
     }
     paramToShowUI.style.display = 'block';
   }
-  
+  document.querySelector('.btn').disabled = false;
 }
 
 // Exibe ou esconde os resultados e o loading gif
 function showOrHideResultsOrLoading(results, loading) {
-   // Show or Hide results
-   document.getElementById(calculadora.result.ui).style.display = results
-   document.getElementById('loading').style.display = loading;
+  console.log(calculadora);
+  
+  // Show or Hide results
+  if (calculadora === undefined) {
+    const results = document.getElementsByName('results');
+    results.forEach(function (res) {
+      console.log(res.style);
+      
+      res.style.display = results;
+    });
+  } else {
+    document.getElementById(calculadora.result.ui).style.display = results
+    document.getElementById('loading').style.display = loading;
+  }
 }
 
 // Calculate tx mensal to anual
@@ -70,7 +97,7 @@ function exibeCalculoTxAnualFromTxMensal() {
     txConvertidaUI.value = txAnual.toFixed(2);
 
     // Show results and hide loading
-    showOrHideResultsOrLoading('block', 'none'); 
+    showOrHideResultsOrLoading('block', 'none');
   } else {
     showError('Taxa inválida ou não informada.');
   }
@@ -90,7 +117,7 @@ function exibeCalculoTxMensalFromTxAnual() {
     txConvertidaUI.value = txMensal.toFixed(2);
 
     // Show results and hide loading
-    showOrHideResultsOrLoading('block', 'none'); 
+    showOrHideResultsOrLoading('block', 'none');
   } else {
     showError('Taxa inválida ou não informada.');
   }
@@ -99,7 +126,11 @@ function exibeCalculoTxMensalFromTxAnual() {
 
 //Calculate Results
 function calculateResults() {
-  
+  if (calculadora === undefined) {
+    showError('Nenhuma calculadora foi escolhida.');
+    return ;
+  }
+
   switch (calculadora.id) {
     case 'txAnualFromTxMensal':
       exibeCalculoTxAnualFromTxMensal();
@@ -108,16 +139,16 @@ function calculateResults() {
       exibeCalculoTxMensalFromTxAnual();
       break;
     default:
-  
+
   }
-  
+
 }
 
 // Show error
 function showError(error) {
   // hide results and hide loader
   showOrHideResultsOrLoading('none', 'none');
- 
+
   // Create a div
   const errorDivUI = document.createElement('div');
   // Get elements
@@ -133,7 +164,7 @@ function showError(error) {
   cardUI.insertBefore(errorDivUI, headingUI);
 
   // Remove alert after 3 seconds
-  setTimeout(clearError, 2000);
+  setTimeout(clearError, 3000);
 }
 
 // Clear error
