@@ -53,7 +53,7 @@ function getCalculadora(calcId) {
 }
 
 // Exibe os parâmetros da calculadora escolhida
-function showParameters(calculadoraId) {
+function showParameters() {
 
   const paramToShowUI = document.getElementById(calculadora.param.ui);
 
