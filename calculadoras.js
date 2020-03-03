@@ -28,7 +28,21 @@ const calculadoras = [
               config: undefined
             },
     calculate: function(periodoAtual, txAtual, periodoDesejado) {
-      return (Math.pow((1 + (txAtual/100)), (periodoDesejado / periodoAtual)) - 1) * 100;;
+      return (Math.pow((1 + (txMensal/100)), 12) - 1) * 100;
+    }
+  },
+  {
+    id: 'futureValue',
+    param: {
+      ui: 'future-Value',
+      config: undefined,
+    },
+    result: {
+      ui: 'result-future-value',
+      config: undefined,
+    },
+    calculate: (presentValue, taxa, periodo) => {
+      return presentValue * Math.pow((1 + taxa), periodo);
     }
   }
 ];
