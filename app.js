@@ -91,7 +91,7 @@ function exibeCalculoTxAnualFromTxMensal() {
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txMensal = parseFloat(taxaUI.value);
-  const txAnual = getTxAnualFromTxMensal(txMensal);
+  const txAnual = calculadora.calculate(txMensal);
 
   if (isFinite(txAnual)) {
     txConvertidaUI.value = txAnual.toFixed(2);
@@ -111,7 +111,7 @@ function exibeCalculoTxMensalFromTxAnual() {
   const txConvertidaUI = document.getElementById('txConvertida');
 
   const txAnual = parseFloat(taxaUI.value);
-  const txMensal = getTxMensalFromTxAnual(txAnual);
+  const txMensal = calculadora.calculate(txAnual);
 
   if (isFinite(txMensal)) {
     txConvertidaUI.value = txMensal.toFixed(2);

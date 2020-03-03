@@ -10,7 +10,10 @@ const calculadoras = [
            },
     result: { ui: 'results-txconverter', 
               config: undefined
-            }
+            },
+    calculate: function(txAnual) {
+      return (Math.pow((1 + (txAnual/100)), (1/12)) - 1) * 100;
+    }
   },
   {
     id: 'txAnualFromTxMensal', 
@@ -23,6 +26,9 @@ const calculadoras = [
            },
     result: { ui: 'results-txconverter', 
               config: undefined
-            }
+            },
+    calculate: function(periodoAtual, txAtual, periodoDesejado) {
+      return (Math.pow((1 + (txAtual/100)), (periodoDesejado / periodoAtual)) - 1) * 100;;
+    }
   }
 ];
