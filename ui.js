@@ -5,10 +5,16 @@
 class UI {
 
   hideAll(calculadoras) {
-      // Hide all parameters and results
+    console.log(calculadoras);
+    console.log(calculadoras[0].param.ui);
+    
+    
+    // Hide all parameters and results
     calculadoras.forEach(function (calc) {
       const divParamUI = document.getElementById(calc.param.ui);
       const divResultUI = document.getElementById(calc.result.ui);
+      console.log(divParamUI);
+      
       divParamUI.style.display = 'none';
       divResultUI.style.display = 'none';
     });

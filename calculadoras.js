@@ -27,7 +27,7 @@ const calculadoras = [
     result: { ui: 'results-txconverter', 
               config: undefined
             },
-    calculate: function(periodoAtual, txAtual, periodoDesejado) {
+    calculate: function(txMensal) {
       return (Math.pow((1 + (txMensal/100)), 12) - 1) * 100;
     }
   },
@@ -35,11 +35,11 @@ const calculadoras = [
     id: 'futureValue',
     param: {
       ui: 'future-Value',
-      config: undefined,
+      config: undefined
     },
     result: {
       ui: 'result-future-value',
-      config: undefined,
+      config: undefined
     },
     calculate: (presentValue, taxa, periodo) => {
       return presentValue * Math.pow((1 + taxa), periodo);
