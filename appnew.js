@@ -13,7 +13,7 @@ document.getElementById('tipodecalculadora-select').addEventListener('change', f
     calculadora = getCalculadora(calculadoraId);
     ui.showParameters(calculadora);
   }
-
+  e.preventDefault();
 });
 
 // Listem for submit
