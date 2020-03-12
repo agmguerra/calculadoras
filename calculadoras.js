@@ -32,13 +32,13 @@ const calculadoras = [
     }
   },
   {
-    id: 'futureValue',
+    id: 'valorFuturo',
     param: {
-      ui: 'future-Value',
+      ui: 'valorfuturo-param',
       config: undefined
     },
     result: {
-      ui: 'result-future-value',
+      ui: 'results-valorfuturo',
       config: undefined
     },
     calculate: (presentValue, taxa, periodo) => {

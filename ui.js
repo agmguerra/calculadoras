@@ -5,16 +5,10 @@
 class UI {
 
   hideAll(calculadoras) {
-    console.log(calculadoras);
-    console.log(calculadoras[0].param.ui);
-    
-    
     // Hide all parameters and results
-    calculadoras.forEach(function (calc) {
+    calculadoras.forEach(function (calc) {      
       const divParamUI = document.getElementById(calc.param.ui);
       const divResultUI = document.getElementById(calc.result.ui);
-      console.log(divParamUI);
-      
       divParamUI.style.display = 'none';
       divResultUI.style.display = 'none';
     });
@@ -39,9 +33,7 @@ class UI {
     // Show or Hide results
     if (calc === undefined) {
       const results = document.getElementsByName('results');
-      results.forEach(function (res) {
-        console.log(res.style);
-        
+      results.forEach(function (res) {       
         res.style.display = results;
       });
     } else {

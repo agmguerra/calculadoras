@@ -78,6 +78,31 @@ function exibeCalculoTxMensalFromTxAnual() {
 
 }
 
+// Calculate tx mensal to anual
+function exibeCalculoValorFuturo() {
+
+  const valPresenteUI = document.getElementById('present-value');
+  const txUI = document.getElementById('interest-rate');
+  const periodoUI = document.getElementById('periods');
+  const valFuturoUI = document.getElementById('futurevalue');
+
+  const valPresente = parseFloat(valPresenteUI.value);
+  const tx = parseFloat(txUI.value);
+  const periodo = parseFloat(periodoUI.value);
+
+  const valFuturo = calculadora.calculate(valPresente, tx, periodo);
+
+  if (isFinite(valFuturo)) {
+    valFuturoUI.value = valFuturo.toFixed(2);
+
+    // Show results and hide loading
+    ui.showOrHideResultsOrLoading(calculadora, 'block', 'none');
+  } else {
+    ui.showError('Parâmetros inválidos ou não informados.');
+  }
+
+}
+
 //Calculate Results
 function calculateResults() {
   if (calculadora === undefined) {
@@ -92,6 +117,8 @@ function calculateResults() {
     case 'txMensalFromTxAnual':
       exibeCalculoTxMensalFromTxAnual();
       break;
+    case 'valorFuturo':
+      exibeCalculoValorFuturo();
     default:
 
   }
