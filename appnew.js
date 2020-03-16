@@ -87,13 +87,17 @@ function exibeCalculoValorFuturo() {
   const valFuturoUI = document.getElementById('futurevalue');
 
   const valPresente = parseFloat(valPresenteUI.value);
-  const tx = parseFloat(txUI.value);
-  const periodo = parseFloat(periodoUI.value);
+  const tx = parseFloat(txUI.value) / 100;
+  const periodo = parseInt(periodoUI.value);
+
+  console.log(valPresente, tx, periodo);
+  
 
   const valFuturo = calculadora.calculate(valPresente, tx, periodo);
+  console.log(valFuturo);
 
   if (isFinite(valFuturo)) {
-    valFuturoUI.value = valFuturo.toFixed(2);
+    valFuturoUI.value = valFuturo.toFixed(4);
 
     // Show results and hide loading
     ui.showOrHideResultsOrLoading(calculadora, 'block', 'none');
